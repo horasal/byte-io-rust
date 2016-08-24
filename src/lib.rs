@@ -1,12 +1,12 @@
 //! byte-io: a simple crate for read/write numbers to/from binary.
-//! 
+//!
 //! This crate only contains 4 functions:
 //!
 //! * `write_be`: write number to big-endian slice.
 //!
 //! * `read_be`: read number from big-endian slice.
 //!
-//! * `write_le`: write number to little-endian slice. 
+//! * `write_le`: write number to little-endian slice.
 //!
 //! * `read_le`: read number from little-endian slice.
 //!
@@ -73,11 +73,11 @@
 //! ## Implementation Details
 //!
 //! byte-io does __NOT__ focus on efficiency, which means that it may be slow
-//! while handling big streams (e.g. hundreds of Mbytes or more). 
+//! while handling big streams (e.g. hundreds of Mbytes or more).
 //!
 //! Generally speaking, byte-io implements the two traits for numbers: `Readable` and
 //! `Writeable`. Every type implements these two traits can be deceded/enceded from
-//! binary stream. 
+//! binary stream.
 use std::marker;
 use std::mem::{size_of, transmute};
 
@@ -92,7 +92,7 @@ use std::mem::{size_of, transmute};
 /// write_be(&1u64, &mut buf);
 /// assert_eq!(buf, [0,0,0,0,0,0,0,1]);
 /// ```
-pub fn write_be<T: Writeable>(v: &T, buffer: &mut[u8]) {
+pub fn write_be<T: Writeable>(v: &T, buffer: &mut [u8]) {
     T::to_u8_be(v, buffer);
 }
 
@@ -107,7 +107,7 @@ pub fn write_be<T: Writeable>(v: &T, buffer: &mut[u8]) {
 /// assert_eq!(read_be::<i16>(&data[3..]), 0x0123);
 /// ```
 pub fn read_be<T: Readable>(buffer: &[u8]) -> T {
-    T:: from_u8_be(buffer)
+    T::from_u8_be(buffer)
 }
 
 /// write a number to stream as little-endian.
@@ -121,7 +121,7 @@ pub fn read_be<T: Readable>(buffer: &[u8]) -> T {
 /// write_le(&1u64, &mut buf);
 /// assert_eq!(buf, [1,0,0,0,0,0,0,0]);
 /// ```
-pub fn write_le<T: Writeable>(v: &T, buffer: &mut[u8]) {
+pub fn write_le<T: Writeable>(v: &T, buffer: &mut [u8]) {
     T::to_u8_le(v, buffer);
 }
 
@@ -136,7 +136,7 @@ pub fn write_le<T: Writeable>(v: &T, buffer: &mut[u8]) {
 /// assert_eq!(read_le::<i16>(&data[3..]), 0x2301);
 /// ```
 pub fn read_le<T: Readable>(buffer: &[u8]) -> T {
-    T:: from_u8_le(buffer)
+    T::from_u8_le(buffer)
 }
 
 /// Any type implementing Readable can be decoded from binary.
@@ -146,44 +146,44 @@ pub trait Readable : marker::Sized {
 }
 
 /// Any type implementing Writeable can be encoded from binary.
-pub trait Writeable : marker::Sized { 
+pub trait Writeable : marker::Sized {
     fn to_u8_be(&Self, &mut [u8]);
     fn to_u8_le(&Self, &mut [u8]);
 }
 
 
-impl <T: Readable> Readable for Vec<T> {
-    fn from_u8_be(input: &[u8]) ->  Self {
+impl<T: Readable> Readable for Vec<T> {
+    fn from_u8_be(input: &[u8]) -> Self {
         let t_size = size_of::<T>();
         let mut output = Vec::new();
         for i in 0..input.len() / t_size {
-            output.push(T::from_u8_be(&input[i * t_size .. (i + 1) * t_size]));
+            output.push(T::from_u8_be(&input[i * t_size..(i + 1) * t_size]));
         }
         output
     }
 
-    fn from_u8_le(input: &[u8]) ->  Self {
+    fn from_u8_le(input: &[u8]) -> Self {
         let t_size = size_of::<T>();
         let mut output = Vec::new();
         for i in 0..input.len() / t_size {
-            output.push(T::from_u8_le(&input[i * t_size .. (i + 1) * t_size]));
+            output.push(T::from_u8_le(&input[i * t_size..(i + 1) * t_size]));
         }
         output
     }
 }
 
-impl <T: Writeable> Writeable for Vec<T> {
+impl<T: Writeable> Writeable for Vec<T> {
     fn to_u8_be(v: &Self, buf: &mut [u8]) {
         let t_size = size_of::<T>();
-        for (i, v) in v.iter().enumerate() { 
-            T::to_u8_be(v, &mut buf[i * t_size .. (i + 1) * t_size]); 
+        for (i, v) in v.iter().enumerate() {
+            T::to_u8_be(v, &mut buf[i * t_size..(i + 1) * t_size]);
         }
     }
 
     fn to_u8_le(v: &Self, buf: &mut [u8]) {
         let t_size = size_of::<T>();
-        for (i, v) in v.iter().enumerate() { 
-            T::to_u8_le(v, &mut buf[i * t_size .. (i + 1) * t_size]); 
+        for (i, v) in v.iter().enumerate() {
+            T::to_u8_le(v, &mut buf[i * t_size..(i + 1) * t_size]);
         }
     }
 }
@@ -209,11 +209,11 @@ impl Readable for i8 {
 }
 
 impl Readable for u8 {
-    fn from_u8_be(a : &[u8]) -> Self {
+    fn from_u8_be(a: &[u8]) -> Self {
         a[0]
     }
 
-    fn from_u8_le(a : &[u8]) -> Self {
+    fn from_u8_le(a: &[u8]) -> Self {
         a[0]
     }
 }
@@ -412,30 +412,38 @@ impl Readable for bool {
 
 impl Writeable for bool {
     fn to_u8_be(v: &Self, a: &mut [u8]) {
-        a[0] = if *v { 1u8 } else { 0u8 };
+        a[0] = if *v {
+            1u8
+        } else {
+            0u8
+        };
     }
 
     fn to_u8_le(v: &Self, a: &mut [u8]) {
-        a[0] = if *v { 1u8 } else { 0u8 };
+        a[0] = if *v {
+            1u8
+        } else {
+            0u8
+        };
     }
 }
 
 impl Readable for f32 {
     fn from_u8_be(i: &[u8]) -> Self {
-        unsafe{ transmute(u32::from_u8_be(i)) }
+        unsafe { transmute(u32::from_u8_be(i)) }
     }
 
     fn from_u8_le(i: &[u8]) -> Self {
-        unsafe{ transmute(u32::from_u8_le(i)) }
+        unsafe { transmute(u32::from_u8_le(i)) }
     }
 }
 
 impl Readable for f64 {
     fn from_u8_be(i: &[u8]) -> Self {
-        unsafe{ transmute(u64::from_u8_be(i)) }
+        unsafe { transmute(u64::from_u8_be(i)) }
     }
 
     fn from_u8_le(i: &[u8]) -> Self {
-        unsafe{ transmute(u64::from_u8_le(i)) }
+        unsafe { transmute(u64::from_u8_le(i)) }
     }
 }
