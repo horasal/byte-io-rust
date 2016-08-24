@@ -1,4 +1,4 @@
-byte-io: a simple crate for read/write numbers to/from binary.
+## byte-io: a simple crate for read/write numbers to/from binary.
 
 This crate only contains 4 functions: i
 

@@ -2,5 +2,11 @@
 name = "byte-io"
 version = "0.1.0"
 authors = ["Hongjie Zhai <zhaihj@live.jp>"]
+description = "Read/Write numbers from/to u8 slices."
+homepage = "https://github.com/zhaihj"
+documentation = "http://zhaihj.github.io/doc/byte_io/index.html"
+repository = "https://github.com/zhaihj/byte-io-rust"
+readme = "readme.md"
+license = "MIT"
 
 [dependencies]
