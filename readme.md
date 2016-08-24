@@ -31,7 +31,7 @@ byte-io = "0.1"
 
 Read from a slice is simple:
 
-```
+```rust
 use byte_io::*;
 
 fn main() {
@@ -46,7 +46,7 @@ fn main() {
 
 Write is also easy:
 
-```
+```rust
 use byte_io::*;
 
 fn main() {
@@ -60,7 +60,7 @@ fn main() {
 
 Moreover, you can even read/write `Vec<T>`:
 
-```
+```rust
 use byte_io::*;
 
 fn main() {
@@ -77,7 +77,7 @@ fn main() {
 
 The following code also works:
 
-```
+```rust
 use byte_io::*;
 
 fn main() {
