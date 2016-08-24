@@ -1,6 +1,6 @@
 ## byte-io: a simple crate for read/write numbers to/from binary.
 
-This crate only contains 4 functions: i
+This crate only contains 4 functions:
 
 * `write_be`: write number to big-endian slice.
 
@@ -19,6 +19,12 @@ Add the following line to your `[dependencies]` section in `Cargo.toml`
 
 ```toml
 byte-io = { git = "https://github.com/zhaihj/byte-io-rust", branch= "master" }
+```
+
+or you can also download it from [crates.io](http://crates.io):
+
+```toml
+byte-io = "0.1"
 ```
 
 ## Examples:
