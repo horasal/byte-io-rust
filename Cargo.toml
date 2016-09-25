@@ -1,6 +1,6 @@
 [package]
 name = "byte-io"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Hongjie Zhai <zhaihj@live.jp>"]
 description = "Read/Write numbers from/to u8 slices."
 homepage = "https://github.com/zhaihj"
