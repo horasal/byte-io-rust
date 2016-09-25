@@ -438,6 +438,16 @@ impl Readable for f32 {
     }
 }
 
+impl Writeable for f32 {
+    fn to_u8_be(v: &Self, a: &mut [u8]) {
+        unsafe { u32::to_u8_be(transmute(v), a) }
+    }
+
+    fn to_u8_le(v: &Self, a: &mut [u8]) {
+        unsafe { u32::to_u8_le(transmute(v), a) }
+    }
+}
+
 impl Readable for f64 {
     fn from_u8_be(i: &[u8]) -> Self {
         unsafe { transmute(u64::from_u8_be(i)) }
@@ -445,5 +455,15 @@ impl Readable for f64 {
 
     fn from_u8_le(i: &[u8]) -> Self {
         unsafe { transmute(u64::from_u8_le(i)) }
+    }
+}
+
+impl Writeable for f64 {
+    fn to_u8_be(v: &Self, a: &mut [u8]) {
+        unsafe { u64::to_u8_be(transmute(v), a) }
+    }
+
+    fn to_u8_le(v: &Self, a: &mut [u8]) {
+        unsafe { u64::to_u8_le(transmute(v), a) }
     }
 }
